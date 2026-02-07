@@ -1,32 +1,236 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>NEWS SPHERE | Coming Soon</title>
-  <meta name="robots" content="noindex">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>뉴스환경 NEWSPHERE – Coming Soon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
     * {
       box-sizing: border-box;
-    }
-    body {
       margin: 0;
       padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR",
+        "Apple SD Gothic Neo", system-ui, sans-serif;
       background: #000;
+      color: #fff;
+    }
+
+    .page {
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
+    }
+
+    /* 상단 파란 영역 */
+    .hero {
+      flex: 1;
+      background: #0061ff;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      padding: 40px 20px;
+      text-align: center;
     }
-   img {
-  max-width: 1200px;
-  width: 90%;
-  height: auto;
-  display: block;
-}
+
+    /* 로고 + 타이틀 래퍼 */
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      max-width: 1100px;
+      width: 100%;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-wrap img {
+      width: 150px;
+      max-width: 35vw;
+      height: auto;
+    }
+
+    .brand-text {
+      text-align: left;
+    }
+
+    .brand-kr {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-en {
+      font-size: 18px;
+      letter-spacing: 0.3em;
+      margin-top: 6px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .hero-icon {
+      display: none; /* 모바일에선 숨김 */
+    }
+
+    .hero-icon img {
+      width: 180px;
+      max-width: 35vw;
+      height: auto;
+    }
+
+    /* 슬로건 */
+    .hero-slogan {
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1.4;
+      animation: fadeInUp 0.8s ease-out 0.2s forwards;
+      opacity: 0;
+    }
+
+    /* 하단 검정 영역 */
+    .bottom {
+      background: #000;
+      padding: 32px 20px 40px;
+      text-align: center;
+    }
+
+    .bottom-text {
+      font-size: 28px;
+      line-height: 1.5;
+      animation: fadeInUp 0.8s ease-out 0.4s forwards;
+      opacity: 0;
+    }
+
+    .bottom-text strong {
+      font-weight: 800;
+    }
+
+    .coming {
+      margin-top: 18px;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      animation: blink 1.6s ease-in-out 1.2s infinite;
+    }
+
+    /* 애니메이션 정의 */
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes blink {
+      0%, 100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* 반응형: 태블릿 이상에서 말풍선 보이기 */
+    @media (min-width: 900px) {
+      .hero {
+        padding: 60px 40px;
+        text-align: left;
+      }
+
+      .hero-top {
+        text-align: left;
+      }
+
+      .hero-icon {
+        display: block;
+      }
+
+      .hero-slogan {
+        font-size: 42px;
+        text-align: left;
+        max-width: 1100px;
+        width: 100%;
+      }
+
+      .bottom-text {
+        font-size: 32px;
+      }
+
+      .coming {
+        font-size: 44px;
+      }
+    }
+
+    /* 아주 작은 화면 */
+    @media (max-width: 480px) {
+      .brand-kr {
+        font-size: 30px;
+      }
+      .brand-en {
+        font-size: 14px;
+        letter-spacing: 0.18em;
+      }
+      .hero-slogan {
+        font-size: 26px;
+      }
+      .bottom-text {
+        font-size: 22px;
+      }
+      .coming {
+        font-size: 32px;
+      }
+    }
   </style>
 </head>
 <body>
-  <img src="temp.jpg" alt="NEWS SPHERE Coming Soon">
+  <div class="page">
+    <!-- 상단 파란 영역 -->
+    <section class="hero">
+      <div class="hero-top">
+        <!-- 왼쪽: NS 로고 + 타이틀 -->
+        <div class="logo-wrap">
+          <!-- 여기에 네 로고 파일 경로 넣기 -->
+          <img src="logo-ns.png" alt="뉴스환경 NS 로고" />
+          <div class="brand-text">
+            <div class="brand-kr">뉴스환경</div>
+            <div class="brand-en">NEWSPHERE</div>
+          </div>
+        </div>
+
+        <!-- 오른쪽: 말풍선 아이콘 (PC·태블릿에서만) -->
+        <div class="hero-icon">
+          <img src="bubble.png" alt="News Sphere messenger icon" />
+        </div>
+      </div>
+
+      <!-- 슬로건 -->
+      <h1 class="hero-slogan">세상의 모든 맥락을 잇다</h1>
+    </section>
+
+    <!-- 하단 검정 영역 -->
+    <section class="bottom">
+      <p class="bottom-text">
+        <strong>2026년 3월</strong> 정식 오픈 예정
+      </p>
+      <p class="coming">coming&nbsp;&nbsp;soon</p>
+    </section>
+  </div>
 </body>
 </html>
