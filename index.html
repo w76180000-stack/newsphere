@@ -22,215 +22,107 @@
     .page {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-    }
-
-    /* 상단 파란 영역 */
-    .hero {
-      flex: 1;
-      background: #0061ff;
-      display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    /* 로고 + 타이틀 래퍼 */
-    .hero-top {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-      max-width: 1100px;
-      width: 100%;
-      margin-bottom: 40px;
-      animation: fadeInUp 0.8s ease-out forwards;
-      opacity: 0;
-    }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo-wrap img {
-      width: 150px;
-      max-width: 35vw;
-      height: auto;
-    }
-
-    .brand-text {
-      text-align: left;
-    }
-
-    .brand-kr {
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-
-    .brand-en {
-      font-size: 18px;
-      letter-spacing: 0.3em;
-      margin-top: 6px;
-      text-transform: uppercase;
-      opacity: 0.9;
-    }
-
-    .hero-icon {
-      display: none; /* 모바일에선 숨김 */
-    }
-
-    .hero-icon img {
-      width: 180px;
-      max-width: 35vw;
-      height: auto;
-    }
-
-    /* 슬로건 */
-    .hero-slogan {
-      font-size: 36px;
-      font-weight: 800;
-      line-height: 1.4;
-      animation: fadeInUp 0.8s ease-out 0.2s forwards;
-      opacity: 0;
-    }
-
-    /* 하단 검정 영역 */
-    .bottom {
       background: #000;
-      padding: 32px 20px 40px;
-      text-align: center;
     }
 
-    .bottom-text {
-      font-size: 28px;
-      line-height: 1.5;
-      animation: fadeInUp 0.8s ease-out 0.4s forwards;
-      opacity: 0;
+    /* 배너 전체를 가운데에 한 장 깔기 */
+    .banner-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 1280px;   /* 배너 원래 가로 크기에 맞춰 대략 조정 */
+      aspect-ratio: 16 / 9; /* 16:9 느낌. 배너 비율과 다르면 조정 가능 */
+      overflow: hidden;
     }
 
-    .bottom-text strong {
-      font-weight: 800;
+    .banner-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .coming {
-      margin-top: 18px;
-      font-size: 40px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: lowercase;
-      animation: blink 1.6s ease-in-out 1.2s infinite;
+    /* === 여기서부터 로고/말풍선 오버레이 === */
+    .logo-overlay,
+    .bubble-overlay {
+      position: absolute;
+      pointer-events: none; /* 눌러도 반응 안 함 */
     }
 
-    /* 애니메이션 정의 */
-    @keyframes fadeInUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    /* 로고 위치 (배너 기준 %) */
+    .logo-overlay {
+      top: 16%;   /* 배너 안에서 위에서부터 16% 지점 */
+      left: 7%;   /* 왼쪽에서 7% 지점 */
+      width: 24%; /* 로고 크기 */
+      animation: logoFloat 6s ease-in-out infinite;
     }
 
-    @keyframes blink {
-      0%, 100% {
-        opacity: 0.3;
-      }
-      50% {
-        opacity: 1;
-      }
+    /* 말풍선 위치 (배너 안에서 오른쪽 위) */
+    .bubble-overlay {
+      top: 10%;
+      right: 8%;
+      width: 22%;
+      animation: bubbleFloat 4s ease-in-out infinite;
     }
 
-    /* 반응형: 태블릿 이상에서 말풍선 보이기 */
-    @media (min-width: 900px) {
-      .hero {
-        padding: 60px 40px;
-        text-align: left;
-      }
-
-      .hero-top {
-        text-align: left;
-      }
-
-      .hero-icon {
-        display: block;
-      }
-
-      .hero-slogan {
-        font-size: 42px;
-        text-align: left;
-        max-width: 1100px;
-        width: 100%;
-      }
-
-      .bottom-text {
-        font-size: 32px;
-      }
-
-      .coming {
-        font-size: 44px;
-      }
+    .logo-overlay img,
+    .bubble-overlay img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    /* 아주 작은 화면 */
-    @media (max-width: 480px) {
-      .brand-kr {
-        font-size: 30px;
+    /* 로고 살짝 떠다니는 느낌 */
+    @keyframes logoFloat {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* 말풍선이 살짝 커졌다 작아졌다 하는 느낌 */
+    @keyframes bubbleFloat {
+      0%   { transform: translateY(0) scale(1); }
+      50%  { transform: translateY(-8px) scale(1.03); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    /* 작은 화면에서 배너 가독성 유지 */
+    @media (max-width: 600px) {
+      .banner-wrap {
+        max-width: 100%;
+        border-radius: 0;
       }
-      .brand-en {
-        font-size: 14px;
-        letter-spacing: 0.18em;
+      .logo-overlay {
+        top: 18%;
+        left: 5%;
+        width: 40%;
       }
-      .hero-slogan {
-        font-size: 26px;
-      }
-      .bottom-text {
-        font-size: 22px;
-      }
-      .coming {
-        font-size: 32px;
+      .bubble-overlay {
+        top: 8%;
+        right: 4%;
+        width: 30%;
       }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <!-- 상단 파란 영역 -->
-    <section class="hero">
-      <div class="hero-top">
-        <!-- 왼쪽: NS 로고 + 타이틀 -->
-        <div class="logo-wrap">
-          <!-- 여기에 네 로고 파일 경로 넣기 -->
-          <img src="logo-ns.png" alt="뉴스환경 NS 로고" />
-          <div class="brand-text">
-            <div class="brand-kr">뉴스환경</div>
-            <div class="brand-en">NEWSPHERE</div>
-          </div>
-        </div>
+    <div class="banner-wrap">
+      <!-- 배너 전체 이미지 -->
+      <img src="banner.jpg" alt="뉴스환경 배너" class="banner-bg" />
 
-        <!-- 오른쪽: 말풍선 아이콘 (PC·태블릿에서만) -->
-        <div class="hero-icon">
-          <img src="bubble.png" alt="News Sphere messenger icon" />
-        </div>
+      <!-- 배너 위에 얹는 움직이는 로고 -->
+      <div class="logo-overlay">
+        <img src="logo-ns.png" alt="뉴스환경 로고" />
       </div>
 
-      <!-- 슬로건 -->
-      <h1 class="hero-slogan">세상의 모든 맥락을 잇다</h1>
-    </section>
-
-    <!-- 하단 검정 영역 -->
-    <section class="bottom">
-      <p class="bottom-text">
-        <strong>2026년 3월</strong> 정식 오픈 예정
-      </p>
-      <p class="coming">coming&nbsp;&nbsp;soon</p>
-    </section>
+      <!-- 배너 위에 얹는 움직이는 말풍선 -->
+      <div class="bubble-overlay">
+        <img src="bubble.png" alt="뉴스환경 말풍선" />
+      </div>
+    </div>
   </div>
 </body>
 </html>
