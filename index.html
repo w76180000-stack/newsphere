@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    /* 전체 초기화 */
     * {
       margin: 0;
       padding: 0;
@@ -21,66 +20,48 @@
       align-items: center;
     }
 
-    /* 배너 전체 영역 */
+    /* 배너 전체 박스 */
     .wrap {
       width: 90%;
       max-width: 1000px;
-      position: relative; /* ← 슬로건을 이미지 위에 올리기 위해 필수 */
+      position: relative; /* 위에 말풍선을 얹기 위해 필요 */
     }
 
     /* 배너 이미지 */
-    .wrap img {
+    .banner-img {
+      display: block;
       width: 100%;
       height: auto;
-      display: block;
     }
 
-    /* 🌈 무지개 슬로건 */
-    .slogan {
+    /* 오버레이 말풍선 */
+    .bubble-overlay {
       position: absolute;
-      left: 50%;
-      top: 52%;
-      transform: translateX(-50%);
-      text-align: center;
+      /* ↓ 이 세 개가 위치/크기 좌표 포인트 (배너 기준 %) */
+      top: 13%;    /* 조금 위로 올리고 */
+      right: 6%;   /* 배너 오른쪽에서 약간 안쪽으로 */
+      width: 30%;  /* 말풍선 크기 */
 
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-
-      background: linear-gradient(
-        90deg,
-        #ff3c3c,
-        #ffb300,
-        #ffee00,
-        #3cff57,
-        #3cc7ff,
-        #7b3cff,
-        #ff3cc7
-      );
-      background-size: 400% 100%;
-
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-
-      animation: rainbowMove 6s linear infinite;
+      /* 움직이지 않게 고정 – 애니메이션 X */
+      pointer-events: none;
     }
 
-    /* 무지개 애니메이션 */
-    @keyframes rainbowMove {
-      0% {
-        background-position: 0% 50%;
-      }
-      100% {
-        background-position: 100% 50%;
-      }
+    .bubble-overlay img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
-    /* 모바일 대응 */
+    /* 모바일일 때 미세 보정 */
     @media (max-width: 600px) {
-      .slogan {
-        font-size: 30px;
-        top: 54%;
+      .wrap {
+        width: 95%;
+      }
+
+      .bubble-overlay {
+        top: 12%;
+        right: 4%;
+        width: 34%;
       }
     }
   </style>
@@ -88,12 +69,12 @@
 
 <body>
   <div class="wrap">
-    <!-- 🔽 여기 이미지 파일명만 네가 쓰는 걸로 맞춰 -->
-    <img src="news-banner.jpg" alt="뉴스환경 NEWSPHERE Coming Soon" />
+    <!-- 🔽 배너 원본 이미지: 실제 파일 이름으로 맞춰줘 -->
+    <img src="news-banner.jpg" alt="뉴스환경 메인 배너" class="banner-img" />
 
-    <!-- 🌈 색이 변하는 문구 -->
-    <div class="slogan">
-      세상의 모든 맥락을 잇다
+    <!-- 🔽 내가 만든 말풍선 PNG 오버레이 -->
+    <div class="bubble-overlay">
+      <img src="bubble.png" alt="말풍선 아이콘" />
     </div>
   </div>
 </body>
