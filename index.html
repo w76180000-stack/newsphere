@@ -20,21 +20,19 @@
       align-items: center;
     }
 
-    /* 전체 배너 */
     .wrap {
       width: 90%;
       max-width: 1000px;
       position: relative;
     }
 
-    /* 배경 배너 */
     .banner-img {
       width: 100%;
       height: auto;
       display: block;
     }
 
-    /* 말풍선 + 글자 오버레이 */
+    /* 🔥 화려한 컬러 변환 핵심 */
     .bubble-img {
       position: absolute;
       inset: 0;
@@ -43,17 +41,45 @@
       object-fit: cover;
       pointer-events: none;
 
-      /* 🌈 색상 회전 애니메이션 */
-      animation: hueRotate 6s linear infinite;
+      animation: rainbowGlow 4s linear infinite;
     }
 
-    /* 색상 회전 */
-    @keyframes hueRotate {
+    /* 🌈 네온 레인보우 */
+    @keyframes rainbowGlow {
       0% {
-        filter: hue-rotate(0deg);
+        filter:
+          hue-rotate(0deg)
+          saturate(300%)
+          brightness(1.2)
+          drop-shadow(0 0 8px rgba(255, 0, 255, 0.6));
+      }
+      25% {
+        filter:
+          hue-rotate(90deg)
+          saturate(350%)
+          brightness(1.3)
+          drop-shadow(0 0 10px rgba(0, 255, 255, 0.7));
+      }
+      50% {
+        filter:
+          hue-rotate(180deg)
+          saturate(400%)
+          brightness(1.4)
+          drop-shadow(0 0 12px rgba(0, 255, 0, 0.8));
+      }
+      75% {
+        filter:
+          hue-rotate(270deg)
+          saturate(350%)
+          brightness(1.3)
+          drop-shadow(0 0 10px rgba(255, 255, 0, 0.7));
       }
       100% {
-        filter: hue-rotate(360deg);
+        filter:
+          hue-rotate(360deg)
+          saturate(300%)
+          brightness(1.2)
+          drop-shadow(0 0 8px rgba(255, 0, 255, 0.6));
       }
     }
 
@@ -67,11 +93,8 @@
 
 <body>
   <div class="wrap">
-    <!-- 배너 배경 -->
     <img src="news-banner.jpg" class="banner-img" alt="뉴스환경 배너" />
-
-    <!-- 글자만 있는 말풍선 PNG -->
-    <img src="bubble.png" class="bubble-img" alt="슬로건 말풍선" />
+    <img src="bubble.png" class="bubble-img" alt="슬로건 오버레이" />
   </div>
 </body>
 </html>
