@@ -2,40 +2,99 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>뉴스환경 NEWSPHERE – Coming Soon</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>뉴스환경 | NEWSPHERE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
+    /* 전체 초기화 */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
       background: #000;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
     }
 
-   .wrap {
-  width: 100%;
-  max-width: 1000px;  /* ← 숫자만 줄임 */
-}
+    /* 배너 전체 영역 */
+    .wrap {
+      width: 90%;
+      max-width: 1000px;
+      position: relative; /* ← 슬로건을 이미지 위에 올리기 위해 필수 */
+    }
 
-    img {
-      display: block;
+    /* 배너 이미지 */
+    .wrap img {
       width: 100%;
       height: auto;
+      display: block;
+    }
+
+    /* 🌈 무지개 슬로건 */
+    .slogan {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      transform: translateX(-50%);
+      text-align: center;
+
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+
+      background: linear-gradient(
+        90deg,
+        #ff3c3c,
+        #ffb300,
+        #ffee00,
+        #3cff57,
+        #3cc7ff,
+        #7b3cff,
+        #ff3cc7
+      );
+      background-size: 400% 100%;
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      animation: rainbowMove 6s linear infinite;
+    }
+
+    /* 무지개 애니메이션 */
+    @keyframes rainbowMove {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+
+    /* 모바일 대응 */
+    @media (max-width: 600px) {
+      .slogan {
+        font-size: 30px;
+        top: 54%;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <!-- 여기 src 파일 이름을 실제 업로드한 이름으로 맞춰줘 -->
-    <img src="news-banner.jpg" alt="뉴스환경 NEWSPHERE Coming Soon 배너" />
+    <!-- 🔽 여기 이미지 파일명만 네가 쓰는 걸로 맞춰 -->
+    <img src="news-banner.jpg" alt="뉴스환경 NEWSPHERE Coming Soon" />
+
+    <!-- 🌈 색이 변하는 문구 -->
+    <div class="slogan">
+      세상의 모든 맥락을 잇다
+    </div>
   </div>
 </body>
 </html>
