@@ -20,28 +20,41 @@
       align-items: center;
     }
 
-    /* 배너 전체 영역 */
+    /* 전체 배너 */
     .wrap {
       width: 90%;
       max-width: 1000px;
-      position: relative; /* 오버레이를 얹기 위해 필요 */
+      position: relative;
     }
 
-    /* 기본 배너 이미지 */
+    /* 배경 배너 */
     .banner-img {
-      display: block;
       width: 100%;
       height: auto;
+      display: block;
     }
 
-    /* 새로 올린 말풍선/텍스트 전체 오버레이 */
+    /* 말풍선 + 글자 오버레이 */
     .bubble-img {
       position: absolute;
-      inset: 0;            /* top:0; right:0; bottom:0; left:0; 와 동일 */
+      inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;   /* 비율 맞게 채우기 */
-      pointer-events: none;/* 클릭 등 이벤트 막기 */
+      object-fit: cover;
+      pointer-events: none;
+
+      /* 🌈 색상 회전 애니메이션 */
+      animation: hueRotate 6s linear infinite;
+    }
+
+    /* 색상 회전 */
+    @keyframes hueRotate {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+      100% {
+        filter: hue-rotate(360deg);
+      }
     }
 
     @media (max-width: 600px) {
@@ -51,17 +64,14 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <!-- 🔽 배너 배경: 실제 파일 이름으로 수정해도 됨 -->
-    <img src="news-banner.jpg"
-         alt="뉴스환경 Coming Soon 배너"
-         class="banner-img" />
+    <!-- 배너 배경 -->
+    <img src="news-banner.jpg" class="banner-img" alt="뉴스환경 배너" />
 
-    <!-- 🔽 새로 올린 말풍선/텍스트 이미지(위에 딱 겹침) -->
-    <img src="bubble.png"
-         alt="뉴스환경 슬로건 오버레이"
-         class="bubble-img" />
+    <!-- 글자만 있는 말풍선 PNG -->
+    <img src="bubble.png" class="bubble-img" alt="슬로건 말풍선" />
   </div>
 </body>
 </html>
