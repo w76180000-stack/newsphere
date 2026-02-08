@@ -6,9 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
       width: 100%;
       height: 100%;
       background: #ffffff;          /* 바탕 흰색 */
@@ -17,42 +21,49 @@
       align-items: center;
     }
 
-    /* 배너 전체 묶음 */
+    /* 🎯 배너 박스 */
     .stage {
       position: relative;
-      width: 70%;
-      max-width: 900px;
+      width: min(900px, 95vw);      /* 배너 전체 크기만 조절 */
+      aspect-ratio: 16 / 9;         /* 이미지 비율과 맞춰주면 딱 맞음 */
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+
+      /* 배경 JPG */
+      background-image: url("images/bg_main.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #000;
     }
 
-    /* 배경 이미지 */
-    .bg {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* 로고 */
-    .logo {
+    /* ✅ 앞으로 쓸 공통 PNG 레이어 규칙 */
+    .layer {
       position: absolute;
-      top: 6%;        /* ← 위치 조절 */
-      left: 5%;       /* ← 위치 조절 */
-      width: 22%;     /* ← 로고 크기 조절 */
-      height: auto;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;    /* PNG 캔버스 전체를 그대로 씌우기 */
+      pointer-events: none;
+    }
+
+    /* 로고는 지금은 layer 하나만 사용 */
+    .logo {
+      /* 공통 규칙을 그대로 사용하니까 내용 비어도 됨 */
     }
   </style>
 </head>
 <body>
 
   <div class="stage">
-    <!-- 배경 JPG -->
-    <img src="images/bg_main.jpg"
-         alt="뉴스환경 배경"
-         class="bg">
+    <!-- 배경은 CSS로 이미 들어가 있음 -->
 
-    <!-- 로고 PNG -->
+    <!-- 로고 PNG: PNG에서 잡아둔 자리/크기 그대로 사용 -->
     <img src="images/logo.png"
          alt="뉴스환경 로고"
-         class="logo">
+         class="layer logo">
   </div>
 
 </body>
