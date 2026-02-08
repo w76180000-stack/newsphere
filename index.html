@@ -15,22 +15,21 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: #ffffff;          /* 바탕 흰색 */
+      background: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    /* 🎯 배너 박스 */
+    /* 배너 박스 */
     .stage {
       position: relative;
-      width: min(900px, 95vw);      /* 배너 전체 크기만 조절 */
-      aspect-ratio: 16 / 9;         /* 이미지 비율과 맞춰주면 딱 맞음 */
-      border-radius: 14px;
+      width: min(900px, 95vw);
+      aspect-ratio: 16 / 9;
       overflow: hidden;
+      border-radius: 14px;
       box-shadow: 0 12px 35px rgba(0,0,0,0.6);
 
-      /* 배경 JPG */
       background-image: url("images/bg_main.jpg");
       background-size: cover;
       background-position: center;
@@ -38,32 +37,37 @@
       background-color: #000;
     }
 
-    /* ✅ 앞으로 쓸 공통 PNG 레이어 규칙 */
+    /* 모든 PNG 공통 규칙 */
     .layer {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;    /* PNG 캔버스 전체를 그대로 씌우기 */
+      object-fit: cover;
       pointer-events: none;
-    }
-
-    /* 로고는 지금은 layer 하나만 사용 */
-    .logo {
-      /* 공통 규칙을 그대로 사용하니까 내용 비어도 됨 */
     }
   </style>
 </head>
 <body>
 
   <div class="stage">
-    <!-- 배경은 CSS로 이미 들어가 있음 -->
 
-    <!-- 로고 PNG: PNG에서 잡아둔 자리/크기 그대로 사용 -->
+    <!-- 1️⃣ 로고 -->
     <img src="images/logo.png"
          alt="뉴스환경 로고"
-         class="layer logo">
+         class="layer">
+
+    <!-- 2️⃣ 슬로건 -->
+    <img src="images/slogan.png"
+         alt="세상의 모든 맥락을 잇다"
+         class="layer">
+
+    <!-- 3️⃣ 말풍선 -->
+    <img src="images/bubble.png"
+         alt="메신저 말풍선"
+         class="layer">
+
   </div>
 
 </body>
