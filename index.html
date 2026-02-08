@@ -15,26 +15,64 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: #ffffff;
+      background: #02040a;  /* 전체 배경 쪽도 살짝 딥한 네이비 */
       display: flex;
       justify-content: center;
       align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     }
 
-    /* 전체 배너 영역 */
+    /* =========================
+       공통 배너 박스 스타일
+       ========================= */
     .stage {
       position: relative;
       width: min(900px, 95vw);
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      border-radius: 14px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.6);
-
+      border-radius: 16px;
+      box-shadow:
+        0 0 25px rgba(0, 0, 0, 0.9),
+        0 0 50px rgba(0, 150, 255, 0.45);
       background-image: url("images/bg_main.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-color: #000;
+      animation: stageGlow 10s ease-in-out infinite;
+    }
+
+    /* 외곽에 흐르는 광택 */
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(0, 255, 255, 0.0),
+        rgba(0, 255, 255, 0.6),
+        rgba(255, 0, 255, 0.0),
+        rgba(255, 255, 0, 0.5),
+        rgba(0, 255, 255, 0.0)
+      );
+      mix-blend-mode: screen;
+      opacity: 0.0;
+      pointer-events: none;
+      animation: borderSweep 12s linear infinite;
+    }
+
+    /* 중앙 빛 번짐 */
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.18), transparent 55%),
+                  radial-gradient(circle at 80% 20%, rgba(0,255,255,0.20), transparent 60%),
+                  radial-gradient(circle at 50% 90%, rgba(0,0,0,0.6), transparent 70%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+      animation: vignettePulse 8s ease-in-out infinite;
     }
 
     /* 모든 PNG 공통 */
@@ -47,6 +85,200 @@
       object-fit: cover;
       pointer-events: none;
     }
+
+    /* =========================
+       각 레이어 별 효과
+       ========================= */
+
+    /* 1. 로고 – 부유 + 회전 + 네온 글로우 */
+    .layer-logo {
+      animation:
+        logoFloat 7s ease-in-out infinite,
+        logoTilt  10s ease-in-out infinite,
+        logoGlow  4s ease-in-out infinite;
+      transform-origin: 15% 40%;
+    }
+
+    /* 2. 슬로건 – 무지개 네온 + 숨쉬기 + 살짝 강조 */
+    .layer-slogan {
+      animation:
+        sloganHue 5s linear infinite,
+        sloganPulse 2.6s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+
+    /* 3. 말풍선 – 위아래 부유 + 살짝 기울기 + 반짝 */
+    .layer-bubble {
+      animation:
+        bubbleFloat 6s ease-in-out infinite,
+        bubbleTilt  9s ease-in-out infinite,
+        bubbleGlow  3.2s ease-in-out infinite;
+      transform-origin: 80% 40%;
+    }
+
+    /* 4. 2026년 정식오픈예정 – 아래에서 서서히 등장 */
+    .layer-date {
+      opacity: 0;
+      animation:
+        dateFadeUp 2.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards 0.5s,
+        dateGlow   4s ease-in-out infinite 2.4s;
+    }
+
+    /* 5. Coming soon – 부드러운 페이드 + 팝 */
+    .layer-coming {
+      animation:
+        comingFade 2.8s ease-in-out infinite 1.4s,
+        comingPop  3.2s ease-in-out infinite 1.4s;
+    }
+
+    /* =========================
+       Keyframes
+       ========================= */
+
+    @keyframes stageGlow {
+      0%   { box-shadow: 0 0 25px rgba(0,0,0,0.9), 0 0 40px rgba(0,120,255,0.35); }
+      50%  { box-shadow: 0 0 35px rgba(0,0,0,1),   0 0 65px rgba(0,220,255,0.6); }
+      100% { box-shadow: 0 0 25px rgba(0,0,0,0.9), 0 0 40px rgba(0,120,255,0.35); }
+    }
+
+    @keyframes borderSweep {
+      0%   { transform: rotate(0deg);   opacity: 0.0; }
+      15%  { opacity: 0.8; }
+      40%  { opacity: 0.2; }
+      70%  { opacity: 0.6; }
+      100% { transform: rotate(360deg); opacity: 0.0; }
+    }
+
+    @keyframes vignettePulse {
+      0%, 100% { opacity: 0.55; }
+      50%      { opacity: 0.85; }
+    }
+
+    /* 로고 동작 */
+    @keyframes logoFloat {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes logoTilt {
+      0%   { transform: translateY(0) rotate(0deg); }
+      50%  { transform: translateY(-6px) rotate(-1.5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    @keyframes logoGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 3px rgba(255,255,255,0.6));
+      }
+      40% {
+        filter: drop-shadow(0 0 12px rgba(0,255,255,1))
+                drop-shadow(0 0 20px rgba(0,120,255,0.9));
+      }
+      70% {
+        filter: drop-shadow(0 0 8px rgba(0,200,255,0.9));
+      }
+    }
+
+    /* 슬로건 동작 */
+    @keyframes sloganHue {
+      0% {
+        filter:
+          hue-rotate(0deg)
+          saturate(280%)
+          brightness(1.3)
+          drop-shadow(0 0 8px rgba(0,255,255,0.9));
+      }
+      25% {
+        filter:
+          hue-rotate(90deg)
+          saturate(340%)
+          brightness(1.4)
+          drop-shadow(0 0 11px rgba(255,0,255,0.95));
+      }
+      50% {
+        filter:
+          hue-rotate(180deg)
+          saturate(380%)
+          brightness(1.5)
+          drop-shadow(0 0 13px rgba(0,255,150,0.95));
+      }
+      75% {
+        filter:
+          hue-rotate(270deg)
+          saturate(340%)
+          brightness(1.4)
+          drop-shadow(0 0 11px rgba(255,255,0,0.95));
+      }
+      100% {
+        filter:
+          hue-rotate(360deg)
+          saturate(280%)
+          brightness(1.3)
+          drop-shadow(0 0 8px rgba(0,255,255,0.9));
+      }
+    }
+
+    @keyframes sloganPulse {
+      0%   { opacity: 0;   transform: scale(0.96); }
+      15%  { opacity: 1;   transform: scale(1.03); }
+      40%  { opacity: 0.92; transform: scale(1.00); }
+      65%  { opacity: 1;   transform: scale(1.04); }
+      100% { opacity: 0.96; transform: scale(0.99); }
+    }
+
+    /* 말풍선 동작 */
+    @keyframes bubbleFloat {
+      0%   { transform: translateY(3px); }
+      50%  { transform: translateY(-7px); }
+      100% { transform: translateY(3px); }
+    }
+    @keyframes bubbleTilt {
+      0%   { transform: translateY(3px) rotate(-2deg); }
+      50%  { transform: translateY(-7px) rotate(2deg); }
+      100% { transform: translateY(3px) rotate(-2deg); }
+    }
+    @keyframes bubbleGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 6px rgba(0,0,0,0.7));
+      }
+      50% {
+        filter:
+          drop-shadow(0 0 14px rgba(255,255,255,0.9))
+          drop-shadow(0 0 26px rgba(0,180,255,0.9));
+      }
+    }
+
+    /* 날짜 텍스트 동작 */
+    @keyframes dateFadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(26px) scale(0.97);
+        filter: blur(4px);
+      }
+      60% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1.01);
+      }
+    }
+    @keyframes dateGlow {
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(255,255,255,0.7)); }
+      50%      { filter: drop-shadow(0 0 9px rgba(0,255,255,0.95)); }
+    }
+
+    /* Coming soon 동작 */
+    @keyframes comingFade {
+      0%, 100% { opacity: 0.75; }
+      40%      { opacity: 1; }
+      70%      { opacity: 0.9; }
+    }
+    @keyframes comingPop {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.05); }
+    }
   </style>
 </head>
 <body>
@@ -56,27 +288,27 @@
     <!-- 1️⃣ 로고 -->
     <img src="images/logo.png"
          alt="뉴스환경 로고"
-         class="layer">
+         class="layer layer-logo">
 
     <!-- 2️⃣ 슬로건 -->
     <img src="images/slogan.png"
          alt="세상의 모든 맥락을 잇다"
-         class="layer">
+         class="layer layer-slogan">
 
     <!-- 3️⃣ 말풍선 -->
     <img src="images/bubble.png"
          alt="메신저 말풍선"
-         class="layer">
+         class="layer layer-bubble">
 
     <!-- 4️⃣ 2026년 정식오픈예정 -->
     <img src="images/open_2026.png"
          alt="2026년 정식 오픈 예정"
-         class="layer">
+         class="layer layer-date">
 
     <!-- 5️⃣ Coming Soon -->
     <img src="images/coming_soon.png"
          alt="Coming Soon"
-         class="layer">
+         class="layer layer-coming">
 
   </div>
 
