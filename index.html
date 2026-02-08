@@ -13,243 +13,39 @@
     }
 
     body {
-      background: #000;
+      background: #000;              /* 페이지 전체 배경 (밖) */
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     }
 
-    /* 🎯 배너 박스(카드) 설정 */
+    /* 🎯 가운데 카드(배너) 박스 */
     .stage {
-      width: min(900px, 95vw);   /* 최대 900px, 모바일에선 화면의 95% */
-      aspect-ratio: 16 / 9;      /* 가로:세로 비율 고정 */
+      width: min(900px, 95vw);       /* 최대 900px, 모바일에서는 화면의 95% */
+      aspect-ratio: 16 / 9;          /* 가로:세로 비율 고정 */
       position: relative;
       border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 12px 35px rgba(0,0,0,0.6);
-      background: #000;          /* 배경이 안 떠도 까만 카드가 보이도록 */
+      background: #000;              /* 혹시 이미지가 안 떠도 까만 카드가 보이도록 */
     }
 
-    /* 기준이 되는 파란 배경 – 카드 높이를 결정하는 용도 */
-    .base-bg {
+    /* 📷 카드 안에 꽉 채워 넣는 배경 이미지 */
+    .bg-main {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover;             /* 이미지 비율 유지하면서 카드 꽉 채우기 */
       display: block;
-    }
-
-    /* 공통 레이어 속성: 카드 전체를 덮는 방식 */
-    .layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;   /* 이미지 크기가 같으면 정확히 겹침 */
-      pointer-events: none;
-      display: block;
-    }
-
-    /* 0. 검은 하단 배경 – 약간의 밝기 펄스 */
-    .layer-bg-black {
-      animation: bgPulse 6s ease-in-out infinite;
-      opacity: 0.9;
-    }
-    @keyframes bgPulse {
-      0%   { opacity: 0.75; filter: brightness(0.8); }
-      50%  { opacity: 1;    filter: brightness(1); }
-      100% { opacity: 0.75; filter: brightness(0.85); }
-    }
-
-    /* 1. 로고 – 위아래로 가볍게 떠다니며 은은한 빛 */
-    .layer-logo {
-      animation:
-        logoFloat 7s ease-in-out infinite,
-        logoGlow  3.5s ease-in-out infinite;
-      transform-origin: center left;
-    }
-    @keyframes logoFloat {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
-    }
-    @keyframes logoGlow {
-      0%, 100% {
-        filter: drop-shadow(0 0 2px rgba(255,255,255,0.4));
-      }
-      50% {
-        filter: drop-shadow(0 0 10px rgba(0,255,255,0.9));
-      }
-    }
-
-    /* 2. 슬로건 – 네온 무지개 + 숨쉬기 */
-    .layer-slogan {
-      animation:
-        rainbowGlow 4.5s linear infinite,
-        pulseGlow   2.7s ease-in-out infinite;
-      transform-origin: center center;
-    }
-    @keyframes rainbowGlow {
-      0% {
-        filter:
-          hue-rotate(0deg)
-          saturate(320%)
-          brightness(1.3)
-          drop-shadow(0 0 8px rgba(0, 255, 255, 0.7));
-      }
-      25% {
-        filter:
-          hue-rotate(90deg)
-          saturate(380%)
-          brightness(1.4)
-          drop-shadow(0 0 12px rgba(255, 0, 255, 0.8));
-      }
-      50% {
-        filter:
-          hue-rotate(180deg)
-          saturate(420%)
-          brightness(1.5)
-          drop-shadow(0 0 14px rgba(0, 255, 0, 0.9));
-      }
-      75% {
-        filter:
-          hue-rotate(270deg)
-          saturate(380%)
-          brightness(1.4)
-          drop-shadow(0 0 12px rgba(255, 255, 0, 0.8));
-      }
-      100% {
-        filter:
-          hue-rotate(360deg)
-          saturate(320%)
-          brightness(1.3)
-          drop-shadow(0 0 8px rgba(0, 255, 255, 0.7));
-      }
-    }
-    @keyframes pulseGlow {
-      0% {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-      20% {
-        opacity: 1;
-        transform: scale(1.02);
-      }
-      45% {
-        opacity: 0.9;
-        transform: scale(1.00);
-      }
-      70% {
-        opacity: 1;
-        transform: scale(1.04);
-      }
-      100% {
-        opacity: 0.95;
-        transform: scale(0.99);
-      }
-    }
-
-    /* 3. 오른쪽 동그란 말풍선 – 살짝 떠다니며 기울기 */
-    .layer-bubble {
-      animation:
-        bubbleFloat 6s ease-in-out infinite,
-        bubbleTilt  8s ease-in-out infinite;
-      transform-origin: 70% 40%;
-    }
-    @keyframes bubbleFloat {
-      0%   { transform: translateY(2px); }
-      50%  { transform: translateY(-6px); }
-      100% { transform: translateY(2px); }
-    }
-    @keyframes bubbleTilt {
-      0%   { transform: translateY(2px) rotate(-1.5deg); }
-      50%  { transform: translateY(-6px) rotate(1.5deg); }
-      100% { transform: translateY(2px) rotate(-1.5deg); }
-    }
-
-    /* 4. "2026년 정식오픈예정" – 아래서 위로 페이드인 */
-    .layer-date {
-      animation: dateFadeUp 1.8s ease-out forwards;
-      opacity: 0;
-    }
-    @keyframes dateFadeUp {
-      0% {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      60% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* 5. Coming soon – 은은하게 깜빡이며 튕김 */
-    .layer-coming {
-      animation:
-        comingBlink 1.5s ease-in-out infinite,
-        comingPop   2.8s ease-in-out infinite;
-      transform-origin: center center;
-    }
-    @keyframes comingBlink {
-      0%, 100% { opacity: 0.7; }
-      40%      { opacity: 1; }
-      80%      { opacity: 0.85; }
-    }
-    @keyframes comingPop {
-      0%, 100% { transform: scale(1); }
-      50%      { transform: scale(1.04); }
-    }
-
-    /* 모바일: 카드 폭만 조정 */
-    @media (max-width: 600px) {
-      .stage {
-        width: 95vw;
-      }
     }
   </style>
 </head>
 <body>
   <div class="stage">
-    <!-- 0. 파란 배경 (가장 밑, 카드 크기 기준) -->
-    <img src="images/bg_blue.png"
-         alt="뉴스환경 파란 배경"
-         class="base-bg" />
-
-    <!-- 0-2. 검은 하단 배경 -->
-    <img src="images/bg_black.png"
-         alt="뉴스환경 검은 배경"
-         class="layer layer-bg-black" />
-
-    <!-- 1. 로고 -->
-    <img src="images/logo_ns.png"
-         alt="뉴스환경 로고"
-         class="layer layer-logo" />
-
-    <!-- 2. 슬로건: 세상의 모든 맥락을 잇다 -->
-    <img src="images/slogan.png"
-         alt="세상의 모든 맥락을 잇다"
-         class="layer layer-slogan" />
-
-    <!-- 3. 오른쪽 말풍선 -->
-    <img src="images/bubble.png"
-         alt="메신저 말풍선"
-         class="layer layer-bubble" />
-
-    <!-- 4. 2026년 정식오픈예정 -->
-    <img src="images/open_2026.png"
-         alt="2026년 정식 오픈 예정"
-         class="layer layer-date" />
-
-    <!-- 5. Coming soon -->
-    <img src="images/coming_soon.png"
-         alt="Coming soon"
-         class="layer layer-coming" />
+    <!-- ✅ 여기 한 줄만 이미지 -->
+    <img src="images/bg_main.jpg"
+         alt="뉴스환경 배너 배경"
+         class="bg-main" />
   </div>
 </body>
 </html>
