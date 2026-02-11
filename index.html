@@ -19,6 +19,21 @@ html,body{
   font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
 }
 
+/* ===== 배경 전체 펄스 ===== */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 50% 50%, rgba(0,100,255,.15), transparent 70%);
+  animation:bgPulse 2s ease-in-out infinite;
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes bgPulse{
+  0%,100%{opacity:.3;transform:scale(1)}
+  50%{opacity:.7;transform:scale(1.1)}
+}
+
 /* ===== 메인 배너 ===== */
 .stage{
   position:relative;
@@ -28,13 +43,16 @@ html,body{
   border-radius:18px;
   background:url("images/bg_main.jpg") center/cover no-repeat;
   box-shadow:
-    0 0 30px rgba(0,150,255,.7),
-    0 0 90px rgba(150,0,255,.5);
-  cursor:pointer; /* 클릭으로 재생/일시정지 토글 */
-  transition:box-shadow .15s,transform .15s;
+    0 0 50px rgba(0,150,255,.9),
+    0 0 100px rgba(150,0,255,.7),
+    0 0 150px rgba(255,0,150,.5),
+    inset 0 0 60px rgba(0,255,255,.3);
+  cursor:pointer;
+  transition:box-shadow .1s,transform .1s;
+  z-index:1;
 }
 
-/* ===== 모든 PNG ===== */
+/* ===== 모든 PNG (원래 디자인 위치 그대로) ===== */
 .layer{
   position:absolute;
   top:0;
@@ -43,7 +61,26 @@ html,body{
   height:100%;
   object-fit:cover;
   pointer-events:none;
-  z-index:5;
+  z-index:10;
+}
+
+/* =====================
+   🌌 움직이는 은하수 배경
+===================== */
+.galaxy{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(100,0,255,.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,200,255,.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,0,150,.3) 0%, transparent 60%);
+  animation:galaxyMove 8s ease-in-out infinite;
+  mix-blend-mode:screen;
+  z-index:1;
+}
+@keyframes galaxyMove{
+  0%,100%{transform:rotate(0deg) scale(1)}
+  50%{transform:rotate(5deg) scale(1.1)}
 }
 
 /* =====================
@@ -53,47 +90,125 @@ html,body{
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle,rgba(255,255,255,.7) 1px,transparent 2px) 10% 20%/3px 3px,
-    radial-gradient(circle,rgba(0,255,255,.6) 1px,transparent 2px) 80% 30%/2px 2px,
-    radial-gradient(circle,rgba(255,0,255,.7) 1px,transparent 2px) 50% 70%/2px 2px;
-  animation: twinkle 2s infinite alternate;
+    radial-gradient(circle,rgba(255,255,255,.9) 1px,transparent 2px) 10% 20%/4px 4px,
+    radial-gradient(circle,rgba(0,255,255,.8) 1px,transparent 2px) 80% 30%/3px 3px,
+    radial-gradient(circle,rgba(255,0,255,.9) 1px,transparent 2px) 50% 70%/3px 3px,
+    radial-gradient(circle,rgba(255,255,0,.8) 1px,transparent 2px) 25% 55%/2px 2px,
+    radial-gradient(circle,rgba(0,255,150,.7) 1px,transparent 2px) 70% 80%/3px 3px,
+    radial-gradient(circle,rgba(255,100,100,.8) 1px,transparent 2px) 90% 15%/2px 2px,
+    radial-gradient(circle,rgba(100,200,255,.9) 1px,transparent 2px) 5% 90%/3px 3px;
+  animation: twinkle 1s infinite alternate;
   mix-blend-mode:screen;
   z-index:2;
-  opacity:.5;
 }
-
 @keyframes twinkle{
-  0%{opacity:.2}
-  100%{opacity:.8}
+  0%{opacity:.3}
+  100%{opacity:1}
 }
 
 /* =====================
-   ☄️ 두껍고 큰 유성 효과
+   🎆 폭죽/불꽃 파티클
+===================== */
+.firework{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:explode 2s ease-out infinite;
+  mix-blend-mode:screen;
+  z-index:4;
+}
+.firework::before,.firework::after{
+  content:'';
+  position:absolute;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:inherit;
+}
+@keyframes explode{
+  0%{
+    transform:scale(0);
+    opacity:1;
+    box-shadow:
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor,
+      0 0 0 0 currentColor;
+  }
+  50%{
+    transform:scale(1);
+    opacity:1;
+    box-shadow:
+      40px -40px 0 0 currentColor,
+      -40px -40px 0 0 currentColor,
+      40px 40px 0 0 currentColor,
+      -40px 40px 0 0 currentColor,
+      55px 0 0 0 currentColor,
+      -55px 0 0 0 currentColor,
+      0 55px 0 0 currentColor,
+      0 -55px 0 0 currentColor;
+  }
+  100%{
+    transform:scale(1.5);
+    opacity:0;
+    box-shadow:
+      80px -80px 0 -3px currentColor,
+      -80px -80px 0 -3px currentColor,
+      80px 80px 0 -3px currentColor,
+      -80px 80px 0 -3px currentColor,
+      110px 0 0 -3px currentColor,
+      -110px 0 0 -3px currentColor,
+      0 110px 0 -3px currentColor,
+      0 -110px 0 -3px currentColor;
+  }
+}
+
+/* 폭죽 위치/색 개별 지정 */
+.fire1{top:20%;left:15%;background:cyan;animation-delay:0s}
+.fire2{top:30%;left:75%;background:magenta;animation-delay:.4s}
+.fire3{top:60%;left:25%;background:yellow;animation-delay:.8s}
+.fire4{top:15%;left:50%;background:#ff6b6b;animation-delay:1.2s}
+.fire5{top:70%;left:80%;background:#4ecdc4;animation-delay:1.6s}
+.fire6{top:45%;left:10%;background:#ffe66d;animation-delay:.2s}
+.fire7{top:25%;left:90%;background:#ff8a5b;animation-delay:.6s}
+.fire8{top:80%;left:45%;background:#a8e6cf;animation-delay:1s}
+
+/* =====================
+   ☄️ 유성 효과 (굵게)
 ===================== */
 .meteor{
   position:absolute;
-  width:12px;            /* 더 두껍게 */
-  height:280px;          /* 더 길게 */
-  background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));
+  width:8px;
+  height:240px;
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,1),
+    rgba(0,255,255,.8),
+    rgba(255,0,255,.5),
+    transparent);
   transform:rotate(45deg);
-  animation:shoot 5s linear infinite;
+  animation:shoot 3s linear infinite;
   mix-blend-mode:screen;
   z-index:3;
   border-radius:999px;
-  opacity:.9;
+  filter:blur(1px);
 }
-
-.meteor:nth-child(1){top:-220px;left:3%;  animation-delay:0s}
-.meteor:nth-child(2){top:-240px;left:33%; animation-delay:1.8s}
-.meteor:nth-child(3){top:-260px;left:63%; animation-delay:3.2s}
-
 @keyframes shoot{
   0%  {transform:translate(0,0) rotate(45deg);opacity:1}
-  100%{transform:translate(900px,900px) rotate(45deg);opacity:0}
+  100%{transform:translate(700px,700px) rotate(45deg);opacity:0}
 }
+.met1{top:-200px;left:5%;  animation-delay:0s}
+.met2{top:-220px;left:25%; animation-delay:.8s;height:200px;width:6px}
+.met3{top:-240px;left:45%; animation-delay:1.6s;height:230px;width:7px}
+.met4{top:-180px;left:65%; animation-delay:2.4s;height:180px;width:5px}
+.met5{top:-260px;left:85%; animation-delay:.4s;height:220px;width:6px}
 
 /* =====================
-   🔫 레이저 빔 좌우 쏘기
+   🔫 레이저 빔
 ===================== */
 .lasers{
   position:absolute;
@@ -102,180 +217,331 @@ html,body{
   z-index:3;
   mix-blend-mode:screen;
 }
-
 .laser{
   position:absolute;
-  width:140%;
-  height:4px;
-  background:linear-gradient(to right, rgba(0,255,255,0), rgba(0,255,255,1), rgba(0,255,255,0));
-  opacity:.8;
-  box-shadow:0 0 12px rgba(0,255,255,.9);
-  animation:laserMove 4s linear infinite;
+  width:200%;
+  height:3px;
+  opacity:.9;
+  animation:laserMove 2.5s linear infinite;
+  filter:blur(1px);
 }
-
-.laser:nth-child(1){top:25%;animation-delay:0s}
-.laser:nth-child(2){top:50%;animation-delay:1s}
-.laser:nth-child(3){top:75%;animation-delay:2s}
-
 @keyframes laserMove{
-  0%  {transform:translateX(-120%)}
-  50% {transform:translateX(20%)}
-  100%{transform:translateX(120%)}
+  0%  {transform:translateX(-100%)}
+  100%{transform:translateX(50%)}
+}
+.l1{top:20%;background:linear-gradient(to right, transparent, cyan, transparent);animation-delay:0s}
+.l2{top:35%;background:linear-gradient(to right, transparent, magenta, transparent);animation-delay:.3s}
+.l3{top:50%;background:linear-gradient(to right, transparent, yellow, transparent);animation-delay:.6s}
+.l4{top:65%;background:linear-gradient(to right, transparent, #00ff88, transparent);animation-delay:.9s}
+.l5{top:80%;background:linear-gradient(to right, transparent, #ff6b6b, transparent);animation-delay:1.2s}
+
+/* =====================
+   💡 스트로보 플래시
+===================== */
+.strobe{
+  position:absolute;
+  inset:0;
+  background:white;
+  opacity:0;
+  animation:strobeFlash .15s infinite;
+  mix-blend-mode:overlay;
+  z-index:6;
+  pointer-events:none;
+}
+@keyframes strobeFlash{
+  0%,90%,100%{opacity:0}
+  92%{opacity:.35}
 }
 
 /* =====================
-   💡 위쪽 플래시 (클럽 플래시)
+   🌈 무지개 보더
 ===================== */
-.top-flash-wrap{
+.rainbow-border{
+  position:absolute;
+  inset:-4px;
+  border-radius:22px;
+  background:linear-gradient(45deg,
+    #ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3,
+    #ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3);
+  background-size:400% 400%;
+  animation:rainbowMove 3s linear infinite;
+  z-index:-1;
+  filter:blur(8px);
+}
+@keyframes rainbowMove{
+  0%{background-position:0% 50%}
+  100%{background-position:400% 50%}
+}
+
+/* =====================
+   💥 코너 플래시
+===================== */
+.corner-flash{
+  position:absolute;
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  filter:blur(40px);
+  animation:cornerPulse 1.5s ease-in-out infinite;
+  mix-blend-mode:screen;
+  z-index:2;
+}
+@keyframes cornerPulse{
+  0%,100%{opacity:.3;transform:scale(.8)}
+  50%{opacity:.9;transform:scale(1.3)}
+}
+.cf-tl{top:-50px;left:-50px;background:cyan;animation-delay:0s}
+.cf-tr{top:-50px;right:-50px;background:magenta;animation-delay:.3s}
+.cf-bl{bottom:-50px;left:-50px;background:yellow;animation-delay:.6s}
+.cf-br{bottom:-50px;right:-50px;background:#00ff88;animation-delay:.9s}
+
+/* =====================
+   ⚡ 번개 효과
+===================== */
+.lightning{
   position:absolute;
   top:0;
-  left:0;
-  width:100%;
-  height:45%;        /* 위쪽 절반까지만 영향 */
-  pointer-events:none;
-  z-index:4;
-  mix-blend-mode:screen;
-}
-
-.top-flash{
-  position:absolute;
-  top:-20%;
-  width:28%;
-  height:140%;
-  background:radial-gradient(circle at 50% 0,
-    rgba(255,255,255,.9),
-    rgba(0,255,255,.7),
-    transparent 55%);
+  width:4px;
+  height:100%;
+  background:linear-gradient(to bottom,white,cyan,transparent);
   opacity:0;
+  animation:lightningStrike 4s infinite;
+  mix-blend-mode:screen;
+  z-index:5;
   filter:blur(2px);
-  animation:flashTop 1s infinite;
 }
+@keyframes lightningStrike{
+  0%,95%,100%{opacity:0}
+  96%{opacity:1}
+  97%{opacity:0}
+  98%{opacity:.8}
+}
+.lt1{left:20%;animation-delay:0s}
+.lt2{left:50%;animation-delay:1.3s}
+.lt3{left:80%;animation-delay:2.6s}
 
-.top-flash:nth-child(1){left:8%;  animation-delay:0s}
-.top-flash:nth-child(2){left:38%; animation-delay:.35s}
-.top-flash:nth-child(3){left:68%; animation-delay:.7s}
-
-@keyframes flashTop{
-  0%,70%,100%{opacity:0; transform:translateY(0) scale(.9);}
-  5%        {opacity:1; transform:translateY(10px) scale(1.1);}
-  15%       {opacity:.3; transform:translateY(25px) scale(1);}
+/* =====================
+   🎵 사운드 웨이브
+===================== */
+.sound-wave{
+  position:absolute;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:4px;
+  z-index:8;
+}
+.wave-bar{
+  width:6px;
+  height:30px;
+  background:linear-gradient(to top, cyan, magenta);
+  border-radius:3px;
+  animation:waveMove .5s ease-in-out infinite alternate;
+}
+.wave-bar:nth-child(1){animation-delay:0s}
+.wave-bar:nth-child(2){animation-delay:.1s}
+.wave-bar:nth-child(3){animation-delay:.2s}
+.wave-bar:nth-child(4){animation-delay:.3s}
+.wave-bar:nth-child(5){animation-delay:.4s}
+.wave-bar:nth-child(6){animation-delay:.3s}
+.wave-bar:nth-child(7){animation-delay:.2s}
+.wave-bar:nth-child(8){animation-delay:.1s}
+.wave-bar:nth-child(9){animation-delay:0s}
+@keyframes waveMove{
+  0%{height:10px;opacity:.5}
+  100%{height:40px;opacity:1}
 }
 
 /* =====================
-   🌟 리듬 반응용 글로우 (stage-beat 클래스)
+   🌟 리듬 반응 글로우
 ===================== */
 .stage-beat{
   box-shadow:
-    0 0 40px rgba(0,255,255,.9),
-    0 0 110px rgba(255,0,255,.7);
-  transform:scale(1.01);
+    0 0 60px rgba(0,255,255,1),
+    0 0 120px rgba(255,0,255,.9),
+    0 0 180px rgba(255,255,0,.7),
+    inset 0 0 80px rgba(255,255,255,.4);
+  transform:scale(1.02);
 }
 
 /* =====================
    🔥 로고 네온 펄스
 ===================== */
 .layer-logo{
-  animation:logoPulse 2s infinite alternate;
+  animation:logoPulse 1s infinite alternate;
+  z-index:15;
 }
-
 @keyframes logoPulse{
-  0%  {filter:drop-shadow(0 0 5px cyan)}
-  100%{filter:drop-shadow(0 0 20px magenta)}
+  0%  {filter:drop-shadow(0 0 10px cyan) drop-shadow(0 0 20px cyan)}
+  100%{filter:drop-shadow(0 0 25px magenta) drop-shadow(0 0 50px magenta)}
 }
 
 /* =====================
-   🌈 슬로건 네온 변환
+   🌈 슬로건 네온
 ===================== */
 .layer-slogan{
-  animation:sloganNeon 4s linear infinite;
+  animation:sloganNeon 2s linear infinite;
   mix-blend-mode:screen;
+  z-index:14;
 }
-
 @keyframes sloganNeon{
-  0%  {filter:hue-rotate(0deg) brightness(1.2)}
-  100%{filter:hue-rotate(360deg) brightness(1.4)}
+  0%  {filter:hue-rotate(0deg) brightness(1.3) drop-shadow(0 0 15px yellow)}
+  50% {filter:hue-rotate(180deg) brightness(1.5) drop-shadow(0 0 25px magenta)}
+  100%{filter:hue-rotate(360deg) brightness(1.3) drop-shadow(0 0 15px cyan)}
 }
 
 /* =====================
    💬 말풍선 흔들림
 ===================== */
 .layer-bubble{
-  animation:bubbleShake 3s infinite alternate;
+  animation:bubbleShake 2s infinite ease-in-out;
+  z-index:13;
 }
-
 @keyframes bubbleShake{
-  0%  {transform:translateY(0px)}
-  100%{transform:translateY(-8px)}
+  0%,100%{transform:translateY(0) rotate(0);filter:drop-shadow(0 0 10px rgba(255,150,200,.8))}
+  25%{transform:translateY(-8px) rotate(2deg)}
+  75%{transform:translateY(-4px) rotate(-2deg)}
 }
 
 /* =====================
    🔊 Coming soon 맥동
 ===================== */
 .layer-coming{
-  animation:comingBeat 1.5s infinite;
+  animation:comingBeat 1s infinite;
+  z-index:12;
 }
-
 @keyframes comingBeat{
-  0%,100%{transform:scale(1)}
-  50%    {transform:scale(1.09)}
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 5px white)}
+  50%    {transform:scale(1.12);filter:drop-shadow(0 0 20px cyan) drop-shadow(0 0 40px magenta)}
 }
 
+/* =====================
+   🎪 파티클 비
+===================== */
+.particle-rain{
+  position:absolute;
+  top:-10px;
+  width:3px;
+  height:15px;
+  background:linear-gradient(to bottom, white, transparent);
+  animation:particleFall 2s linear infinite;
+  mix-blend-mode:screen;
+  z-index:3;
+}
+@keyframes particleFall{
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(500px);opacity:0}
+}
+.pr1{left:10%;animation-delay:0s;animation-duration:1.8s}
+.pr2{left:20%;animation-delay:.2s;animation-duration:2.2s}
+.pr3{left:30%;animation-delay:.4s;animation-duration:1.6s}
+.pr4{left:40%;animation-delay:.6s;animation-duration:2s}
+.pr5{left:50%;animation-delay:.8s;animation-duration:1.9s}
+.pr6{left:60%;animation-delay:1s;animation-duration:2.1s}
+.pr7{left:70%;animation-delay:1.2s;animation-duration:1.7s}
+.pr8{left:80%;animation-delay:1.4s;animation-duration:2.3s}
+.pr9{left:90%;animation-delay:1.6s;animation-duration:1.5s}
+
+/* =====================
+   📱 모바일
+===================== */
+@media (max-width:600px){
+  .firework{transform:scale(.6)}
+  .corner-flash{width:100px;height:100px}
+  .wave-bar{width:4px}
+}
 </style>
 </head>
 <body>
 
 <div class="stage" id="stage">
 
+  <!-- 🌈 무지개 보더 -->
+  <div class="rainbow-border"></div>
+
+  <!-- 🌌 은하수 배경 -->
+  <div class="galaxy"></div>
+
   <!-- ✨ 별 -->
   <div class="stars"></div>
 
-  <!-- ☄️ 큰 유성 3개 -->
-  <div class="meteor"></div>
-  <div class="meteor"></div>
-  <div class="meteor"></div>
+  <!-- 💥 코너 플래시 -->
+  <div class="corner-flash cf-tl"></div>
+  <div class="corner-flash cf-tr"></div>
+  <div class="corner-flash cf-bl"></div>
+  <div class="corner-flash cf-br"></div>
 
-  <!-- 🔫 레이저 빔 -->
+  <!-- 🎆 폭죽 -->
+  <div class="firework fire1"></div>
+  <div class="firework fire2"></div>
+  <div class="firework fire3"></div>
+  <div class="firework fire4"></div>
+  <div class="firework fire5"></div>
+  <div class="firework fire6"></div>
+  <div class="firework fire7"></div>
+  <div class="firework fire8"></div>
+
+  <!-- ☄️ 유성 -->
+  <div class="meteor met1"></div>
+  <div class="meteor met2"></div>
+  <div class="meteor met3"></div>
+  <div class="meteor met4"></div>
+  <div class="meteor met5"></div>
+
+  <!-- 🎪 파티클 비 -->
+  <div class="particle-rain pr1"></div>
+  <div class="particle-rain pr2"></div>
+  <div class="particle-rain pr3"></div>
+  <div class="particle-rain pr4"></div>
+  <div class="particle-rain pr5"></div>
+  <div class="particle-rain pr6"></div>
+  <div class="particle-rain pr7"></div>
+  <div class="particle-rain pr8"></div>
+  <div class="particle-rain pr9"></div>
+
+  <!-- ⚡ 번개 -->
+  <div class="lightning lt1"></div>
+  <div class="lightning lt2"></div>
+  <div class="lightning lt3"></div>
+
+  <!-- 🔫 레이저 -->
   <div class="lasers">
-    <div class="laser"></div>
-    <div class="laser"></div>
-    <div class="laser"></div>
+    <div class="laser l1"></div>
+    <div class="laser l2"></div>
+    <div class="laser l3"></div>
+    <div class="laser l4"></div>
+    <div class="laser l5"></div>
   </div>
 
-  <!-- 💡 위쪽 플래시 -->
-  <div class="top-flash-wrap">
-    <div class="top-flash"></div>
-    <div class="top-flash"></div>
-    <div class="top-flash"></div>
-  </div>
+  <!-- 💡 스트로보 -->
+  <div class="strobe"></div>
 
   <!-- 🔥 로고 -->
-  <img src="images/logo.png"
-       alt="뉴스환경 로고"
-       class="layer layer-logo">
+  <img src="images/logo.png" alt="뉴스환경 로고" class="layer layer-logo">
 
   <!-- 🌈 슬로건 -->
-  <img src="images/slogan.png"
-       alt="세상의 모든 맥락을 잇다"
-       class="layer layer-slogan">
+  <img src="images/slogan.png" alt="세상의 모든 맥락을 잇다" class="layer layer-slogan">
 
   <!-- 💬 말풍선 -->
-  <img src="images/bubble.png"
-       alt="메신저 말풍선"
-       class="layer layer-bubble">
+  <img src="images/bubble.png" alt="메신저 말풍선" class="layer layer-bubble">
 
   <!-- 📅 2026년 정식오픈예정 -->
-  <img src="images/open_2026.png"
-       alt="2026년 정식 오픈 예정"
-       class="layer">
+  <img src="images/open_2026.png" alt="2026년 정식 오픈 예정" class="layer">
 
   <!-- 🔊 Coming Soon -->
-  <img src="images/coming_soon.png"
-       alt="Coming Soon"
-       class="layer layer-coming">
+  <img src="images/coming_soon.png" alt="Coming Soon" class="layer layer-coming">
+
+  <!-- 🎵 사운드 웨이브 -->
+  <div class="sound-wave">
+    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+  </div>
 
 </div>
 
-<!-- 🎵 배경 음악 (경로에 맞게 파일 올리기) -->
+<!-- 🎵 배경 음악 -->
 <audio id="bg-music" src="audio/bg-music.mp3" preload="auto"></audio>
 
 <script>
@@ -285,13 +551,12 @@ html,body{
   let playing = false;
   let beatInterval = null;
 
-  // 리듬(비트) 효과: 음악이 재생 중일 때 일정 간격으로 stage-beat 클래스 토글
   function startBeat(){
     if(beatInterval) return;
     beatInterval = setInterval(()=>{
       stage.classList.add('stage-beat');
-      setTimeout(()=>stage.classList.remove('stage-beat'),120);
-    }, 250); // 🔥 더 빠르게 (0.25초 간격)
+      setTimeout(()=>stage.classList.remove('stage-beat'),80);
+    }, 200);  // 빠른 비트
   }
 
   function stopBeat(){
@@ -302,20 +567,9 @@ html,body{
     }
   }
 
-  // ✅ 페이지 로드 시 자동 재생 시도
-  window.addEventListener('load', () => {
-    audio.play().then(()=>{
-      playing = true;
-      startBeat();
-    }).catch(err=>{
-      // 브라우저 정책 때문에 막힌 경우를 대비해 콘솔에만 표시
-      console.log('자동 재생이 차단되었습니다. 클릭 시 재생됩니다.', err);
-    });
-  });
-
-  // 클릭 시 음악 재생/일시정지 토글 (자동 재생 실패 대비)
+  // 클릭 시 음악 온/오프
   stage.addEventListener('click', ()=>{
-    if(audio.paused){
+    if(!playing){
       audio.play().then(()=>{
         playing = true;
         startBeat();
@@ -333,6 +587,14 @@ html,body{
     playing = false;
     stopBeat();
   });
+
+  // 음악이 없더라도 기본적으로 약한 비트 효과
+  let autoBeat = setInterval(()=>{
+    if(!playing){
+      stage.classList.add('stage-beat');
+      setTimeout(()=>stage.classList.remove('stage-beat'),100);
+    }
+  }, 800);
 </script>
 
 </body>
