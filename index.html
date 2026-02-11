@@ -52,7 +52,7 @@ body::before{
   z-index:1;
 }
 
-/* ===== 모든 PNG (원래 디자인 위치 그대로) ===== */
+/* ===== 모든 PNG (자리 고정) ===== */
 .layer{
   position:absolute;
   top:0;
@@ -84,7 +84,7 @@ body::before{
 }
 
 /* =====================
-   ✨ 반짝이는 별 레이어
+   ✨ 반짝이는 별
 ===================== */
 .stars{
   position:absolute;
@@ -107,7 +107,7 @@ body::before{
 }
 
 /* =====================
-   🎆 폭죽/불꽃 파티클
+   🎆 폭죽/불꽃
 ===================== */
 .firework{
   position:absolute;
@@ -167,8 +167,6 @@ body::before{
       0 -110px 0 -3px currentColor;
   }
 }
-
-/* 폭죽 위치/색 */
 .fire1{top:20%;left:15%;background:cyan;animation-delay:0s}
 .fire2{top:30%;left:75%;background:magenta;animation-delay:.4s}
 .fire3{top:60%;left:25%;background:yellow;animation-delay:.8s}
@@ -179,7 +177,7 @@ body::before{
 .fire8{top:80%;left:45%;background:#a8e6cf;animation-delay:1s}
 
 /* =====================
-   ☄️ 유성 효과 (굵게)
+   ☄️ 굵은 유성
 ===================== */
 .meteor{
   position:absolute;
@@ -202,10 +200,10 @@ body::before{
   100%{transform:translate(700px,700px) rotate(45deg);opacity:0}
 }
 .met1{top:-200px;left:5%;  animation-delay:0s}
-.met2{top:-220px;left:25%; animation-delay:.8s;height:200px;width:6px}
-.met3{top:-240px;left:45%; animation-delay:1.6s;height:230px;width:7px}
-.met4{top:-180px;left:65%; animation-delay:2.4s;height:180px;width:5px}
-.met5{top:-260px;left:85%; animation-delay:.4s;height:220px;width:6px}
+.met2{top:-220px;left:25%; animation-delay:.8s;height:210px;width:6px}
+.met3{top:-240px;left:45%; animation-delay:1.6s;height:250px;width:7px}
+.met4{top:-180px;left:65%; animation-delay:2.4s;height:190px;width:5px}
+.met5{top:-260px;left:85%; animation-delay:.4s;height:230px;width:6px}
 
 /* =====================
    🔫 레이저 빔
@@ -236,7 +234,7 @@ body::before{
 .l5{top:80%;background:linear-gradient(to right, transparent, #ff6b6b, transparent);animation-delay:1.2s}
 
 /* =====================
-   💡 스트로보 플래시
+   💡 스트로보 플래시 (전체)
 ===================== */
 .strobe{
   position:absolute;
@@ -253,10 +251,26 @@ body::before{
   92%{opacity:.35}
 }
 
-/* ⬇⬇⬇ 글자 어두워지게(투명도 조절) */
-@keyframes textFlash{
-  0%,90%,100%{opacity:1}
-  92%{opacity:.25;}   /* 배경 하얗게 될 때 살짝 어둡게(투명하게) */
+/* =====================
+   🔦 상단 플래시 (위에서 터지는 느낌)
+===================== */
+.top-flash{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:40%;
+  background:linear-gradient(to bottom, rgba(255,255,255,.8), transparent);
+  opacity:0;
+  animation:topFlash 1.2s infinite;
+  mix-blend-mode:screen;
+  z-index:5;
+  pointer-events:none;
+}
+@keyframes topFlash{
+  0%,70%,100%{opacity:0}
+  72%{opacity:.7}
+  78%{opacity:0}
 }
 
 /* =====================
@@ -302,7 +316,7 @@ body::before{
 .cf-br{bottom:-50px;right:-50px;background:#00ff88;animation-delay:.9s}
 
 /* =====================
-   ⚡ 번개 효과
+   ⚡ 번개
 ===================== */
 .lightning{
   position:absolute;
@@ -360,7 +374,7 @@ body::before{
 }
 
 /* =====================
-   🌟 리듬 반응 글로우
+   🌟 리듬 반응 글로우 (상시)
 ===================== */
 .stage-beat{
   box-shadow:
@@ -384,19 +398,54 @@ body::before{
 }
 
 /* =====================
-   🌈 슬로건 네온 + textFlash
+   글자용: 네온 + 흑백 전환
 ===================== */
+
+/* 흑백 전환용 공통 */
+@keyframes textInvert{
+  0%,40%,100%{
+    filter:invert(0) drop-shadow(0 0 10px rgba(255,255,255,.8));
+  }
+  50%{
+    filter:invert(1) drop-shadow(0 0 10px rgba(0,0,0,.9));
+  }
+}
+
+/* 슬로건: 살짝 크기 펄스 + 흑백 */
 .layer-slogan{
   animation:
-    sloganNeon 2s linear infinite,
-    textFlash .15s linear infinite;
+    sloganScale 1.6s ease-in-out infinite,
+    textInvert 0.5s linear infinite;
   mix-blend-mode:screen;
   z-index:14;
 }
-@keyframes sloganNeon{
-  0%  {filter:hue-rotate(0deg) brightness(1.3) drop-shadow(0 0 15px yellow)}
-  50% {filter:hue-rotate(180deg) brightness(1.5) drop-shadow(0 0 25px magenta)}
-  100%{filter:hue-rotate(360deg) brightness(1.3) drop-shadow(0 0 15px cyan)}
+@keyframes sloganScale{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.03)}
+}
+
+/* 2026년 문구 */
+.layer-date{
+  animation:
+    datePulse 1.2s ease-in-out infinite,
+    textInvert 0.5s linear infinite;
+  z-index:12;
+}
+@keyframes datePulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.02)}
+}
+
+/* Coming soon */
+.layer-coming{
+  animation:
+    comingBeat 1s infinite,
+    textInvert 0.5s linear infinite;
+  z-index:12;
+}
+@keyframes comingBeat{
+  0%,100%{transform:scale(1)}
+  50%    {transform:scale(1.12)}
 }
 
 /* =====================
@@ -410,25 +459,6 @@ body::before{
   0%,100%{transform:translateY(0) rotate(0);filter:drop-shadow(0 0 10px rgba(255,150,200,.8))}
   25%{transform:translateY(-8px) rotate(2deg)}
   75%{transform:translateY(-4px) rotate(-2deg)}
-}
-
-/* =====================
-   🔊 Coming soon 맥동 + textFlash
-===================== */
-.layer-coming{
-  animation:
-    comingBeat 1s infinite,
-    textFlash .15s linear infinite;
-  z-index:12;
-}
-@keyframes comingBeat{
-  0%,100%{transform:scale(1);filter:drop-shadow(0 0 5px white)}
-  50%    {transform:scale(1.12);filter:drop-shadow(0 0 20px cyan) drop-shadow(0 0 40px magenta)}
-}
-
-/* 2026년 정식 오픈 예정 문구에도 textFlash 적용 */
-.layer-date{
-  animation:textFlash .15s linear infinite;
 }
 
 /* =====================
@@ -475,10 +505,8 @@ body::before{
   <!-- 🌈 무지개 보더 -->
   <div class="rainbow-border"></div>
 
-  <!-- 🌌 은하수 배경 -->
+  <!-- 🌌 은하수 / 별 -->
   <div class="galaxy"></div>
-
-  <!-- ✨ 별 -->
   <div class="stars"></div>
 
   <!-- 💥 코너 플래시 -->
@@ -529,8 +557,9 @@ body::before{
     <div class="laser l5"></div>
   </div>
 
-  <!-- 💡 스트로보 -->
+  <!-- 💡 전체 스트로보 + 상단 플래시 -->
   <div class="strobe"></div>
+  <div class="top-flash"></div>
 
   <!-- 🔥 로고 -->
   <img src="images/logo.png" alt="뉴스환경 로고" class="layer layer-logo">
@@ -547,7 +576,7 @@ body::before{
   <!-- 🔊 Coming Soon -->
   <img src="images/coming_soon.png" alt="Coming Soon" class="layer layer-coming">
 
-  <!-- 🎵 사운드 웨이브 -->
+  <!-- 🎵 사운드 웨이브 (맨 아래) -->
   <div class="sound-wave">
     <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
     <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
@@ -556,71 +585,43 @@ body::before{
 
 </div>
 
-<!-- 🎵 배경 음악 : autoplay 추가 -->
+<!-- 🎵 배경 음악 (있으면 재생, 없어도 리듬은 계속) -->
 <audio id="bg-music" src="audio/bg-music.mp3" preload="auto" autoplay></audio>
 
 <script>
   const stage = document.getElementById('stage');
   const audio = document.getElementById('bg-music');
 
-  let playing = false;
   let beatInterval = null;
 
   function startBeat(){
     if(beatInterval) return;
+    // 0.2초마다 한 번씩 "쿵" – 음악 없어도 계속
     beatInterval = setInterval(()=>{
       stage.classList.add('stage-beat');
       setTimeout(()=>stage.classList.remove('stage-beat'),80);
-    }, 200);  // 300BPM 정도
+    }, 200);
   }
 
-  function stopBeat(){
-    if(beatInterval){
-      clearInterval(beatInterval);
-      beatInterval = null;
-      stage.classList.remove('stage-beat');
-    }
-  }
-
-  // 페이지 로드 시 자동 재생 시도
+  // 페이지 로드 시: 비트 시작 + 음악 자동재생 시도
   window.addEventListener('DOMContentLoaded', () => {
-    audio.play().then(()=>{
-      playing = true;
-      startBeat();
-    }).catch(e=>{
-      console.log('자동재생이 브라우저에서 막혔습니다:', e);
-      // 막힌 경우, 클릭하면 재생되도록 아래 핸들러가 동작
-    });
+    startBeat();
+    if(audio){
+      audio.play().catch(e=>{
+        console.log('자동재생이 막혔을 수 있습니다:', e);
+      });
+    }
   });
 
-  // 클릭 시 음악 ON/OFF
+  // 클릭하면 음악만 토글 (비트는 계속 유지)
   stage.addEventListener('click', ()=>{
-    if(!playing){
-      audio.play().then(()=>{
-        playing = true;
-        startBeat();
-      }).catch(e=>{
-        console.log('음악 재생 실패:', e);
-      });
+    if(!audio) return;
+    if(audio.paused){
+      audio.play().catch(e=>console.log('음악 재생 실패:', e));
     }else{
       audio.pause();
-      playing = false;
-      stopBeat();
     }
   });
-
-  audio.addEventListener('ended', ()=>{
-    playing = false;
-    stopBeat();
-  });
-
-  // 음악이 꺼져 있을 때만 약한 비트
-  let autoBeat = setInterval(()=>{
-    if(!playing){
-      stage.classList.add('stage-beat');
-      setTimeout(()=>stage.classList.remove('stage-beat'),100);
-    }
-  }, 800);
 </script>
 
 </body>
