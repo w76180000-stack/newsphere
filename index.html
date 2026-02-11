@@ -30,7 +30,7 @@ html,body{
   box-shadow:
     0 0 30px rgba(0,150,255,.7),
     0 0 90px rgba(150,0,255,.5);
-  cursor:pointer; /* 클릭 유도 */
+  cursor:pointer; /* 클릭으로 재생/일시정지 토글 */
   transition:box-shadow .15s,transform .15s;
 }
 
@@ -68,24 +68,24 @@ html,body{
 }
 
 /* =====================
-   ☄️ 큰 유성 효과
+   ☄️ 두껍고 큰 유성 효과
 ===================== */
 .meteor{
   position:absolute;
-  width:8px;
-  height:240px;
+  width:12px;            /* 더 두껍게 */
+  height:280px;          /* 더 길게 */
   background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));
   transform:rotate(45deg);
   animation:shoot 5s linear infinite;
   mix-blend-mode:screen;
   z-index:3;
   border-radius:999px;
-  opacity:.8;
+  opacity:.9;
 }
 
-.meteor:nth-child(1){top:-200px;left:5%;  animation-delay:0s}
-.meteor:nth-child(2){top:-220px;left:35%; animation-delay:1.8s}
-.meteor:nth-child(3){top:-240px;left:65%; animation-delay:3.2s}
+.meteor:nth-child(1){top:-220px;left:3%;  animation-delay:0s}
+.meteor:nth-child(2){top:-240px;left:33%; animation-delay:1.8s}
+.meteor:nth-child(3){top:-260px;left:63%; animation-delay:3.2s}
 
 @keyframes shoot{
   0%  {transform:translate(0,0) rotate(45deg);opacity:1}
@@ -291,7 +291,7 @@ html,body{
     beatInterval = setInterval(()=>{
       stage.classList.add('stage-beat');
       setTimeout(()=>stage.classList.remove('stage-beat'),120);
-    }, 300); // 🔥 더 빠르게 (0.3초 간격)
+    }, 250); // 🔥 더 빠르게 (0.25초 간격)
   }
 
   function stopBeat(){
@@ -302,9 +302,20 @@ html,body{
     }
   }
 
-  // 클릭 시 음악 재생/일시정지 토글
+  // ✅ 페이지 로드 시 자동 재생 시도
+  window.addEventListener('load', () => {
+    audio.play().then(()=>{
+      playing = true;
+      startBeat();
+    }).catch(err=>{
+      // 브라우저 정책 때문에 막힌 경우를 대비해 콘솔에만 표시
+      console.log('자동 재생이 차단되었습니다. 클릭 시 재생됩니다.', err);
+    });
+  });
+
+  // 클릭 시 음악 재생/일시정지 토글 (자동 재생 실패 대비)
   stage.addEventListener('click', ()=>{
-    if(!playing){
+    if(audio.paused){
       audio.play().then(()=>{
         playing = true;
         startBeat();
