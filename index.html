@@ -13,6 +13,7 @@ html,body{
   height:100%;
   background:#000;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
   overflow:hidden;
@@ -50,6 +51,19 @@ body::before{
   cursor:pointer;
   transition:box-shadow .1s,transform .1s;
   z-index:1;
+}
+
+/* ===== 배너 아래 안내 텍스트 ===== */
+.music-hint{
+  margin-top:16px;
+  color:#ffffff;
+  font-size:1.1rem;
+  text-align:center;
+  text-shadow:0 0 8px rgba(0,0,0,.8);
+  z-index:2;
+}
+@media (max-width:600px){
+  .music-hint{font-size:0.95rem;margin-top:10px;}
 }
 
 /* ===== 모든 PNG (자리 고정) ===== */
@@ -234,7 +248,7 @@ body::before{
 .l5{top:80%;background:linear-gradient(to right, transparent, #ff6b6b, transparent);animation-delay:1.2s}
 
 /* =====================
-   💡 스트로보 플래시 (전체)
+   💡 전체 스트로보 플래시
 ===================== */
 .strobe{
   position:absolute;
@@ -252,7 +266,7 @@ body::before{
 }
 
 /* =====================
-   🔦 상단 플래시 (위에서 터지는 느낌)
+   🔦 상단 플래시
 ===================== */
 .top-flash{
   position:absolute;
@@ -398,54 +412,55 @@ body::before{
 }
 
 /* =====================
-   글자용: 네온 + 흑백 전환
+   “세상의 모든 맥락을 잇다” 색: 검정 ↔ 파랑 느낌
 ===================== */
-
-/* 흑백 전환용 공통 */
-@keyframes textInvert{
-  0%,40%,100%{
-    filter:invert(0) drop-shadow(0 0 10px rgba(255,255,255,.8));
-  }
-  50%{
-    filter:invert(1) drop-shadow(0 0 10px rgba(0,0,0,.9));
-  }
-}
-
-/* 슬로건: 살짝 크기 펄스 + 흑백 */
 .layer-slogan{
   animation:
     sloganScale 1.6s ease-in-out infinite,
-    textInvert 0.5s linear infinite;
-  mix-blend-mode:screen;
+    sloganColor 0.7s linear infinite;
   z-index:14;
 }
 @keyframes sloganScale{
   0%,100%{transform:scale(1)}
   50%{transform:scale(1.03)}
 }
+/* PNG 위에 필터 씌워서: 어두운(검정 느낌) ↔ 푸른 네온 */
+@keyframes sloganColor{
+  0%,100%{
+    filter:
+      grayscale(1)
+      brightness(0.15)
+      contrast(1.5)
+      drop-shadow(0 0 4px rgba(0,0,0,0.8));
+  }
+  50%{
+    filter:
+      hue-rotate(210deg)
+      saturate(3)
+      brightness(1.6)
+      drop-shadow(0 0 15px rgba(0,140,255,1));
+  }
+}
 
-/* 2026년 문구 */
+/* =====================
+   2026년 문구 / Coming soon : 기본 네온만
+===================== */
 .layer-date{
-  animation:
-    datePulse 1.2s ease-in-out infinite,
-    textInvert 0.5s linear infinite;
+  animation:datePulse 1.2s ease-in-out infinite;
   z-index:12;
 }
 @keyframes datePulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.02)}
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 4px rgba(255,255,255,.8))}
+  50%{transform:scale(1.02);filter:drop-shadow(0 0 10px rgba(0,255,255,.9))}
 }
 
-/* Coming soon */
 .layer-coming{
-  animation:
-    comingBeat 1s infinite,
-    textInvert 0.5s linear infinite;
+  animation:comingBeat 1s infinite;
   z-index:12;
 }
 @keyframes comingBeat{
-  0%,100%{transform:scale(1)}
-  50%    {transform:scale(1.12)}
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 5px white)}
+  50%    {transform:scale(1.12);filter:drop-shadow(0 0 20px cyan) drop-shadow(0 0 40px magenta)}
 }
 
 /* =====================
@@ -564,7 +579,7 @@ body::before{
   <!-- 🔥 로고 -->
   <img src="images/logo.png" alt="뉴스환경 로고" class="layer layer-logo">
 
-  <!-- 🌈 슬로건 -->
+  <!-- 🌈 슬로건 (세상의 모든 맥락을 잇다) -->
   <img src="images/slogan.png" alt="세상의 모든 맥락을 잇다" class="layer layer-slogan">
 
   <!-- 💬 말풍선 -->
@@ -576,7 +591,7 @@ body::before{
   <!-- 🔊 Coming Soon -->
   <img src="images/coming_soon.png" alt="Coming Soon" class="layer layer-coming">
 
-  <!-- 🎵 사운드 웨이브 (맨 아래) -->
+  <!-- 🎵 사운드 웨이브 -->
   <div class="sound-wave">
     <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
     <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
@@ -585,8 +600,12 @@ body::before{
 
 </div>
 
-<!-- 🎵 배경 음악 (있으면 재생, 없어도 리듬은 계속) -->
-<audio id="bg-music" src="audio/bg-music.mp3" preload="auto" autoplay></audio>
+<div class="music-hint">
+  배너를 클릭하면 음악이 재생됩니다 🔊
+</div>
+
+<!-- 🎵 배경 음악 (클릭 시 재생/일시정지) -->
+<audio id="bg-music" src="audio/bg-music.mp3" preload="auto"></audio>
 
 <script>
   const stage = document.getElementById('stage');
@@ -596,24 +615,23 @@ body::before{
 
   function startBeat(){
     if(beatInterval) return;
-    // 0.2초마다 한 번씩 "쿵" – 음악 없어도 계속
+    // 음악 여부와 상관 없이 계속 리듬
     beatInterval = setInterval(()=>{
       stage.classList.add('stage-beat');
       setTimeout(()=>stage.classList.remove('stage-beat'),80);
-    }, 200);
+    }, 200); // 약 300bpm 느낌
   }
 
-  // 페이지 로드 시: 비트 시작 + 음악 자동재생 시도
+  // 페이지 로드 시 리듬 시작
   window.addEventListener('DOMContentLoaded', () => {
     startBeat();
+    // 자동재생 시도 (브라우저 정책에 따라 막힐 수 있음)
     if(audio){
-      audio.play().catch(e=>{
-        console.log('자동재생이 막혔을 수 있습니다:', e);
-      });
+      audio.play().catch(()=>{ /* 막혀도 무시 */ });
     }
   });
 
-  // 클릭하면 음악만 토글 (비트는 계속 유지)
+  // 배너 클릭 시 음악 토글
   stage.addEventListener('click', ()=>{
     if(!audio) return;
     if(audio.paused){
