@@ -168,7 +168,7 @@ body::before{
   }
 }
 
-/* 폭죽 위치/색 개별 지정 */
+/* 폭죽 위치/색 */
 .fire1{top:20%;left:15%;background:cyan;animation-delay:0s}
 .fire2{top:30%;left:75%;background:magenta;animation-delay:.4s}
 .fire3{top:60%;left:25%;background:yellow;animation-delay:.8s}
@@ -251,6 +251,12 @@ body::before{
 @keyframes strobeFlash{
   0%,90%,100%{opacity:0}
   92%{opacity:.35}
+}
+
+/* ⬇⬇⬇ 글자 어두워지게(투명도 조절) */
+@keyframes textFlash{
+  0%,90%,100%{opacity:1}
+  92%{opacity:.25;}   /* 배경 하얗게 될 때 살짝 어둡게(투명하게) */
 }
 
 /* =====================
@@ -378,10 +384,12 @@ body::before{
 }
 
 /* =====================
-   🌈 슬로건 네온
+   🌈 슬로건 네온 + textFlash
 ===================== */
 .layer-slogan{
-  animation:sloganNeon 2s linear infinite;
+  animation:
+    sloganNeon 2s linear infinite,
+    textFlash .15s linear infinite;
   mix-blend-mode:screen;
   z-index:14;
 }
@@ -405,15 +413,22 @@ body::before{
 }
 
 /* =====================
-   🔊 Coming soon 맥동
+   🔊 Coming soon 맥동 + textFlash
 ===================== */
 .layer-coming{
-  animation:comingBeat 1s infinite;
+  animation:
+    comingBeat 1s infinite,
+    textFlash .15s linear infinite;
   z-index:12;
 }
 @keyframes comingBeat{
   0%,100%{transform:scale(1);filter:drop-shadow(0 0 5px white)}
   50%    {transform:scale(1.12);filter:drop-shadow(0 0 20px cyan) drop-shadow(0 0 40px magenta)}
+}
+
+/* 2026년 정식 오픈 예정 문구에도 textFlash 적용 */
+.layer-date{
+  animation:textFlash .15s linear infinite;
 }
 
 /* =====================
@@ -527,7 +542,7 @@ body::before{
   <img src="images/bubble.png" alt="메신저 말풍선" class="layer layer-bubble">
 
   <!-- 📅 2026년 정식오픈예정 -->
-  <img src="images/open_2026.png" alt="2026년 정식 오픈 예정" class="layer">
+  <img src="images/open_2026.png" alt="2026년 정식 오픈 예정" class="layer layer-date">
 
   <!-- 🔊 Coming Soon -->
   <img src="images/coming_soon.png" alt="Coming Soon" class="layer layer-coming">
@@ -541,8 +556,8 @@ body::before{
 
 </div>
 
-<!-- 🎵 배경 음악 -->
-<audio id="bg-music" src="audio/bg-music.mp3" preload="auto"></audio>
+<!-- 🎵 배경 음악 : autoplay 추가 -->
+<audio id="bg-music" src="audio/bg-music.mp3" preload="auto" autoplay></audio>
 
 <script>
   const stage = document.getElementById('stage');
@@ -556,7 +571,7 @@ body::before{
     beatInterval = setInterval(()=>{
       stage.classList.add('stage-beat');
       setTimeout(()=>stage.classList.remove('stage-beat'),80);
-    }, 200);  // 빠른 비트
+    }, 200);  // 300BPM 정도
   }
 
   function stopBeat(){
@@ -567,7 +582,18 @@ body::before{
     }
   }
 
-  // 클릭 시 음악 온/오프
+  // 페이지 로드 시 자동 재생 시도
+  window.addEventListener('DOMContentLoaded', () => {
+    audio.play().then(()=>{
+      playing = true;
+      startBeat();
+    }).catch(e=>{
+      console.log('자동재생이 브라우저에서 막혔습니다:', e);
+      // 막힌 경우, 클릭하면 재생되도록 아래 핸들러가 동작
+    });
+  });
+
+  // 클릭 시 음악 ON/OFF
   stage.addEventListener('click', ()=>{
     if(!playing){
       audio.play().then(()=>{
@@ -588,7 +614,7 @@ body::before{
     stopBeat();
   });
 
-  // 음악이 없더라도 기본적으로 약한 비트 효과
+  // 음악이 꺼져 있을 때만 약한 비트
   let autoBeat = setInterval(()=>{
     if(!playing){
       stage.classList.add('stage-beat');
